@@ -1,9 +1,13 @@
-import { useState } from "react";
+import styled from "styled-components";
 
+const H1 = styled.h1`
+  color: green;
+  font-size: 100px;
+`;
 function App() {
   return (
     <div>
-      <h1>Hello World</h1>
+      <H1>Hello World</H1>
     </div>
   );
 }
