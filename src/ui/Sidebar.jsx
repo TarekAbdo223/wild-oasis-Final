@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
@@ -13,13 +12,14 @@ const StyledSidebar = styled.aside`
   flex-direction: column;
   gap: 3.2rem;
 `;
-const Sidebar = () => {
+
+function Sidebar() {
   return (
     <StyledSidebar>
       <Logo />
       <MainNav />
     </StyledSidebar>
   );
-};
+}
 
 export default Sidebar;
