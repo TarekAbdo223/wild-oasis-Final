@@ -41,7 +41,7 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-const { isLoading, mutat } = useMutation({
+const { isLoading: isDeleting, mutate } = useMutation({
   mutationFn: (id) => deleteCabin(id),
 });
 
@@ -61,7 +61,9 @@ const CabinRow = ({ cabin }) => {
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{formatCurrency(regularPrice)}</Price>
       <Discount>{formatCurrency(discount)}</Discount>
-      <button onClick={() => mutate(cabinId)}>Delete</button>
+      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+        Delete
+      </button>
     </TableRow>
   );
 };
