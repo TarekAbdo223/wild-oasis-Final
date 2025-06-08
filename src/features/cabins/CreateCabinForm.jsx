@@ -151,7 +151,12 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label="Cabin photo">
-        <FileInput id="image" accept="image/*" disabled={isCreating} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          disabled={isCreating}
+          {...register("description", { required: "This field is required" })}
+        />
       </FormRow>
       <FormRow>
         {/* type is an HTML attribute! */}
