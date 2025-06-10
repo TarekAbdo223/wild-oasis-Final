@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createEditCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
+import { useCreateCabin } from "./useCreateCabin";
 
 const FormRow2 = styled.div`
   display: grid;
@@ -59,18 +60,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   const { errors } = formState;
   console.log(errors);
 
-  const queryClient = useQueryClient();
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: (data) => createEditCabin(data),
-    onSuccess: () => {
-      toast.success("Cabin created successfully");
-      queryClient.invalidateQueries({ queyryKey: ["cabins"] });
-      reset();
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+  const { isCreating, createCabin } = useCreateCabin();
   //////////////////
   const { mutate: editCabin, isLoading: isEditing } = useMutation({
     mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
@@ -91,7 +81,19 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
     if (isEditSession)
       editCabin({ newCabinData: { ...data, image }, id: editId });
-    else createCabin({ ...data, image: image });
+    else
+      createCabin(
+        { ...data, image: image },
+        {
+          onSuccess: () => reset(),
+          // also i got the data if i need to make any changes to the cabin
+          // but we don't need it here we only need to reset the form
+          // if we need it we can make it like this (data) => {
+          //   console.log(data);
+          //   reset();
+          // }
+        }
+      );
   }
 
   function onError(errors) {
