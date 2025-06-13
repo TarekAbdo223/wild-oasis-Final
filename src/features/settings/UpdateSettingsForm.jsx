@@ -6,8 +6,13 @@ import { getSettings } from "../../services/apiSettings";
 import { useSettings } from "./useSettings";
 import Form from "../../ui/Form";
 import Spinner from "../../ui/Spinner";
+import useEditSettings from "./useEditSettings";
+import Button from "../../ui/Button";
+import { useForm } from "react-hook-form";
 
 function UpdateSettingsForm() {
+  const { isEditing, editSettings } = useEditSettings();
+
   const {
     isLoading,
     settings: {
@@ -15,7 +20,7 @@ function UpdateSettingsForm() {
       maxBookingLength,
       maxGuestsPerBooking,
       breakfastPrice,
-    } = {},
+    } = {}, // watch the empty object trick !!!!
     error,
   } = useSettings();
 
@@ -28,10 +33,21 @@ function UpdateSettingsForm() {
 
   if (isLoading) return <Spinner />;
 
+  function handleUpdate(e, field) {
+    const { value } = e.target;
+
+    editSettings({ [field]: value });
+  }
   return (
     <Form>
       <FormRow label="Minimum nights/booking">
-        <Input type="number" id="min-nights" defaultValue={minBookingLength} />
+        <Input
+          type="number"
+          id="min-nights"
+          defaultValue={minBookingLength}
+          onBlur={(e) => handleUpdate(e, "minBookingLength")}
+          disabled={isEditing}
+        />
       </FormRow>
       <FormRow label="Maximum nights/booking">
         <Input type="number" id="max-nights" defaultValue={maxBookingLength} />
