@@ -8,7 +8,7 @@ export function useCabins() {
     error,
   } = useQuery({
     queryKey: ["cabin"],
-    queryFn: () => getCabins,
+    queryFn: () => getCabins(),
   });
 
   return { isLoading, cabins, error };
