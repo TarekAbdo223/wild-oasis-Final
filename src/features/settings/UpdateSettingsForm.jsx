@@ -20,7 +20,7 @@ function UpdateSettingsForm() {
       maxBookingLength,
       maxGuestsPerBooking,
       breakfastPrice,
-    } = {}, // watch the empty object trick !!!!
+    } = {}, // watch the empty object trick !!!! cause in the first it came as undefined
     error,
   } = useSettings();
 
