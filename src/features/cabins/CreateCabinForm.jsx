@@ -49,7 +49,7 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
 
   const isEditSession = Boolean(editId);
@@ -74,7 +74,9 @@ function CreateCabinForm({ cabinToEdit = {} }) {
       editCabin(
         { newCabinData: { ...data, image }, id: editId },
         {
-          onSuccess: () => reset(),
+          onSuccess: (data) => {
+            reset(), onCloseModal?.();
+          },
         }
       );
     else
@@ -82,6 +84,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         { ...data, image: image },
         {
           onSuccess: () => reset(),
+
           // also i got the data if i need to make any changes to the cabin
           // but we don't need it here we only need to reset the form
           // if we need it we can make it like this (data) => {
@@ -97,7 +100,10 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       {/* <FormRow>
         <Label htmlFor="name">Cabin name</Label>
         <Input
@@ -184,7 +190,11 @@ function CreateCabinForm({ cabinToEdit = {} }) {
       </FormRow>
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button disabled={isWorking}>
